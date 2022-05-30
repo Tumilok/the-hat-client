@@ -7,8 +7,8 @@ import JoinRoomScreen from './JoinRoomScreen';
 const App = () => {
   type RootStackParamList = {
     Home: undefined;
-    CreateRoom: undefined;
-    JoinRoom: undefined;
+    CreateRoom: { name: string };
+    JoinRoom: { name: string };
   };
 
   const linking: LinkingOptions<RootStackParamList> = {
@@ -16,8 +16,8 @@ const App = () => {
     config: {
       screens: {
         Home: '',
-        CreateRoom: 'create',
-        JoinRoom: 'join',
+        CreateRoom: 'create/:name',
+        JoinRoom: 'join/:name',
       },
     },
   };
@@ -27,7 +27,11 @@ const App = () => {
   return (
     <NavigationContainer linking={linking}>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: 'Welcome' }}
+        />
         <Stack.Screen
           name="CreateRoom"
           component={CreateRoomScreen}

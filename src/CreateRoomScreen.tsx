@@ -16,7 +16,7 @@ const CreateRoomScreen = () => {
       />
 
       <Button
-        title="Join Room"
+        title="Create Room"
         onPress={() => {
           setWordsList([word, ...wordsList]);
           setWord('');

@@ -1,22 +1,46 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
 
 const HomeScreen = ({ navigation }: any) => {
+  const [name, setName] = useState<string>('');
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>The Hat</Text>
 
-      <Button
-        title="Join Room"
-        onPress={() => {
-          navigation.navigate('JoinRoom');
-        }}
+      <Text style={styles.text}>Please enter your name:</Text>
+
+      <TextInput
+        value={name}
+        onChangeText={text => setName(text)}
+        style={styles.input}
       />
-      <Button
-        title="Create Room"
-        onPress={() => {
-          navigation.navigate('CreateRoom');
-        }}
-      />
+
+      <View style={{ flexDirection: 'row' }}>
+        <View style={{ marginRight: '1rem' }}>
+          <Button
+            title="Join Room"
+            onPress={() => {
+              if (name) {
+                navigation.navigate('JoinRoom', {
+                  name: name,
+                });
+              }
+            }}
+          />
+        </View>
+        <View style={{ marginLeft: '1rem' }}></View>
+        <Button
+          title="Create Room"
+          onPress={() => {
+            if (name) {
+              navigation.navigate('CreateRoom', {
+                name: name,
+              });
+            }
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -29,6 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   heading: { fontSize: 30, marginTop: '1rem', marginBottom: '1rem' },
+  text: { fontSize: 20, marginBottom: '1rem' },
   input: {
     borderColor: '#000',
     borderWidth: 1,
