@@ -1,63 +1,46 @@
-import { useState } from 'react';
-import {
-  Button,
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CreateRoomScreen from './CreateRoomScreen';
+import HomeScreen from './HomeScreen';
+import JoinRoomScreen from './JoinRoomScreen';
 
-export default function App() {
-  const [wordsList, setWordsList] = useState<string[]>([]);
-  const [word, setWord] = useState<string>('');
+const App = () => {
+  type RootStackParamList = {
+    Home: undefined;
+    CreateRoom: undefined;
+    JoinRoom: undefined;
+  };
+
+  const linking: LinkingOptions<RootStackParamList> = {
+    prefixes: [],
+    config: {
+      screens: {
+        Home: '',
+        CreateRoom: 'create',
+        JoinRoom: 'join',
+      },
+    },
+  };
+
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>The Hat</Text>
-
-      <TextInput
-        value={word}
-        onChangeText={text => setWord(text)}
-        style={styles.input}
-      />
-
-      <Button
-        title="Submit"
-        onPress={() => {
-          setWordsList([word, ...wordsList]);
-          setWord('');
-        }}
-      />
-      <Button title="Clear" onPress={() => setWordsList([])} />
-
-      {wordsList && (
-        <FlatList
-          data={wordsList}
-          keyExtractor={item => item}
-          renderItem={({ item }) => (
-            <View>
-              <Text>{item}</Text>
-            </View>
-          )}
+    <NavigationContainer linking={linking}>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="CreateRoom"
+          component={CreateRoomScreen}
+          options={{ title: 'Create Room' }}
         />
-      )}
-    </View>
+        <Stack.Screen
+          name="JoinRoom"
+          component={JoinRoomScreen}
+          options={{ title: 'Join Room' }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  heading: { fontSize: 30, marginTop: '1rem', marginBottom: '1rem' },
-  input: {
-    borderColor: '#000',
-    borderWidth: 1,
-    padding: '1rem',
-    marginBottom: '1rem',
-  },
-});
+export default App;
